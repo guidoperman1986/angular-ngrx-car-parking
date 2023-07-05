@@ -4,36 +4,38 @@ import { Observable, delay, of, throwError } from 'rxjs';
 
 const FAKE_DELAY = 600;
 
+const data = [
+  {
+    plate: '2FMDK3',
+    brand: 'Volvo',
+    model: '960',
+    color: 'Violet',
+  },
+  {
+    plate: '1GYS4C',
+    brand: 'Saab',
+    model: '9-3',
+    color: 'Purple',
+  },
+  {
+    plate: '1GKS1E',
+    brand: 'Ford',
+    model: 'Ranger',
+    color: 'Indigo',
+  },
+  {
+    plate: '1G6AS5',
+    brand: 'Volkswagen',
+    model: 'Golf',
+    color: 'Aquamarine',
+  },
+]
+
 @Injectable({
   providedIn: 'root',
 })
 export class ParkingLotService {
-  cars: Car[] = [
-    {
-      plate: '2FMDK3',
-      brand: 'Volvo',
-      model: '960',
-      color: 'Violet',
-    },
-    {
-      plate: '1GYS4C',
-      brand: 'Saab',
-      model: '9-3',
-      color: 'Purple',
-    },
-    {
-      plate: '1GKS1E',
-      brand: 'Ford',
-      model: 'Ranger',
-      color: 'Indigo',
-    },
-    {
-      plate: '1G6AS5',
-      brand: 'Volkswagen',
-      model: 'Golf',
-      color: 'Aquamarine',
-    },
-  ];
+  cars: Car[] = [];
 
   constructor() {}
 
@@ -46,7 +48,6 @@ export class ParkingLotService {
       }
 
       const car = this.getCarByPlate(plate);
-      console.log(car)
       this.cars = [...this.cars, car];
 
       return of(car).pipe(delay(FAKE_DELAY))
@@ -58,17 +59,12 @@ export class ParkingLotService {
   }
 
   private getCarByPlate(plate: string): Car {
-    const car = this.cars.find((item: Car) => item.plate === plate)
+    const car = data.find((item: Car) => item.plate === plate)
 
     if (car) {
         return car
     }
 
-    return {
-      plate,
-      brand: '',
-      model: '',
-      color: ''
-    }
+    throw `The car with plate ${plate} is not registered`
   }
 }
